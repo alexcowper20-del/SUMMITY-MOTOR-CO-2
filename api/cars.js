@@ -16,6 +16,8 @@ export default async function handler(req, res) {
 
     const rows = (data.records || []).map((record) => ({
       id: record.id,
+
+      // ✅ MATCH YOUR AIRTABLE (lowercase)
       make: record.fields.make || '',
       model: record.fields.model || '',
       price: record.fields.price || 0,
@@ -27,13 +29,16 @@ export default async function handler(req, res) {
       body: record.fields.body || '',
       status: record.fields.status || 'Available',
       description: record.fields.description || '',
+
+      // ✅ MULTIPLE IMAGES READY
       photos: Array.isArray(record.fields.photos)
         ? record.fields.photos.map(p => p.url)
         : []
     }));
 
     res.status(200).json(rows);
+
   } catch (err) {
-    res.status(500).json({ error: 'Failed to load cars' });
+    res.status(500).json({ error: err.message });
   }
 }
