@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   try {
     const baseId = process.env.AIRTABLE_BASE_ID;
     const tableName = process.env.AIRTABLE_TABLE_NAME || 'CARS';
-    const token = process.env.AIRTABLE_TOKEN;
+    const token = process.env.AIRTABLE_PAT;
 
     const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
 
