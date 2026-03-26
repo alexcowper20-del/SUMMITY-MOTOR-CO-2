@@ -1,15 +1,16 @@
 export default async function handler(req, res) {
-  try {
-    const baseId = process.env.AIRTABLE_BASE_ID;
-    const tableName = process.env.AIRTABLE_TABLE_NAME || 'CARS';
-    const token = process.env.AIRTABLE_PAT;
-
-    const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-
-    const airtableRes = await fetch(url, {
+  const response = await fetch(
+    "https://api.airtable.com/v0/appod7WzPQ3JyCFI1/CARS",
+    {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: "Bearer patFhJ1GJYKQKoWLN"
       }
+    }
+  );
+
+  const data = await response.json();
+  res.status(200).json(data);
+}
     });
 
     const data = await airtableRes.json();
