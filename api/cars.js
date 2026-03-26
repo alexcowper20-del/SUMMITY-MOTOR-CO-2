@@ -4,7 +4,7 @@ export default async function handler(req, res) {
       "https://api.airtable.com/v0/appod7WzPQ3JyCFlI/CARS?view=Grid%20view",
       {
         headers: {
-          Authorization: "Bearer patFhJ1GJYKQKoWLN"
+          Authorization: "Bearer patAcJ0UjZR5PYzxT"
         }
       }
     );
