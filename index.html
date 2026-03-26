@@ -728,23 +728,57 @@ footer{background:var(--black);padding:4rem 2.5rem 2rem}
 </template>
 
 <script>
-const STOCK=[
-  {id:1,make:'BMW',model:'M4 Competition',variant:'3.0 M4 Competition Coupe',year:2021,price:50995,mileage:27000,fuel:'Petrol',transmission:'Auto',colour:'Grey',engine:'2,993cc',co2:'223g/km',roadTax:'\u00a3195',category:'Coupe',badge:'Stage 2 \u00b7 Ultimate Pack',sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1454631/w640/3a3f94c0a0fc04ecaf9a81728c2d9a5e_1454631.jpg','https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80'],description:'<p>Summit Motor Company are excited to offer this stunning 2021 BMW M4 Competition finished in grey. Carefully modified with a Stage 2 tune and Ultimate Pack upgrade, elevating it beyond even the standard M4 Competition\'s exceptional performance.</p><p>Features BMW\'s S58 engine paired with an 8-speed M Steptronic gearbox. Full documented service history, all original books and two keys.</p>'},
-  {id:2,make:'Ford',model:'Ranger Wildtrak',variant:'2.0 EcoBlue 213PS AWD 10-Speed Auto Double Cab',year:2022,price:39995,mileage:21131,fuel:'Diesel',transmission:'Auto',colour:'Blue',engine:'1,997cc',co2:'255g/km',roadTax:'\u00a3345',category:'Pickup',badge:'Dirty Unicorn Build',sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1443607/w640/f2deb3940caf2c1e22c8bdaef0add2d7_1443607.jpg'],description:'<p>An exceptional 2022 Ford Ranger Wildtrak bearing the Dirty Unicorn bespoke specification. Powered by Ford\'s 2.0L EcoBlue producing 213PS through a 10-speed automatic gearbox with full-time AWD. Just 21,131 miles from new. Full service history and two keys.</p>'},
-  {id:3,make:'Ford',model:'Transit Custom',variant:'Limited Van 280 L1 EcoBlue 130PS FWD Manual',year:2021,price:29995,mileage:55250,fuel:'Diesel',transmission:'Manual',colour:'Grey',engine:'1,997cc',co2:'187g/km',roadTax:'\u00a3345',category:'Camper Van',badge:'2 Year Warranty',sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1476903/w640/c42449c88a824e512935ff88f4eedbf4_1476903.jpg'],description:'<p>A professionally converted 2021 Ford Transit Custom Camper Van with sleeping for two, integrated cooking facilities, and clever storage. Comes with comprehensive 2-year warranty.</p>'},
-  {id:4,make:'Ford',model:'Transit Custom',variant:'Limited Van 340 L1 EcoBlue 170PS FWD Auto',year:2023,price:23195,priceNote:'+VAT',mileage:28400,fuel:'Diesel',transmission:'Auto',colour:'Grey',engine:'1,997cc',co2:'220g/km',roadTax:'\u00a3345',category:'Panel Van',badge:'2 Years Warranty',sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1441727/w640/c319b329fe4c2f3db2c1098448b6ffb9_1441727.jpg'],description:'<p>2023 Ford Transit Custom Limited 340 in grey. 168bhp automatic with 28,400 miles. Limited specification includes cruise control, heated seats, and FordPass connectivity. 2-year warranty included. Price ex-VAT.</p>'},
-  {id:5,make:'Ford',model:'Transit Custom',variant:'Limited Van 340 L1 EcoBlue 170PS FWD Auto',year:2023,price:19995,priceNote:'+VAT',mileage:47238,fuel:'Diesel',transmission:'Auto',colour:'Grey',engine:'1,997cc',co2:'220g/km',roadTax:'\u00a3345',category:'Panel Van',badge:null,sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1476902/w640/640c32130e2a408fcd90c427358c3edc_1476902.jpg'],description:'<p>2023 Ford Transit Custom Limited 340, 168bhp automatic. Excellent value near-new specification van. 2-year warranty. Price ex-VAT.</p>'},
-  {id:6,make:'Ford',model:'Transit Custom',variant:'Limited Van 300 L1 EcoBlue 130PS FWD Auto',year:2021,price:18649,priceNote:'+VAT',mileage:28000,fuel:'Diesel',transmission:'Auto',colour:'Grey',engine:'1,997cc',co2:'213g/km',roadTax:'\u00a3345',category:'Panel Van',badge:null,sold:false,imgs:['https://img-uk5.cd5.uk/originals/4051/stockimages/1477359/w640/a64b583902bb29a6c5c7b96e79a12070_1477359.jpg'],description:'<p>2021 Ford Transit Custom Limited 300 in grey, 130PS automatic with just 28,000 miles. Excellent balance of economy and practicality. 2-year warranty. Price ex-VAT.</p>'},
-  {id:7,make:'Audi',model:'A5 Sportback',variant:'2.0 TDI S line S Tronic',year:2020,price:22995,mileage:38500,fuel:'Diesel',transmission:'Auto',colour:'Daytona Grey',engine:'1,968cc',co2:'148g/km',roadTax:'\u00a3180',category:'Hatchback',badge:null,sold:false,imgs:['https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=800&q=80'],description:'<p>Refined 2020 Audi A5 Sportback in striking Daytona Grey. S line specification with 18-inch alloys. 190bhp 2.0 TDI through 7-speed S Tronic. Full Audi service history, two keys.</p>'},
-  {id:8,make:'Mercedes-Benz',model:'C220d AMG Line',variant:'AMG Line Premium Auto',year:2021,price:27995,mileage:29000,fuel:'Diesel',transmission:'Auto',colour:'Obsidian Black',engine:'1,950cc',co2:'132g/km',roadTax:'\u00a3165',category:'Saloon',badge:null,sold:false,imgs:['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80'],description:'<p>Exceptional 2021 Mercedes-Benz C220d in Obsidian Black. AMG Line Premium with panoramic roof and Burmester sound. 194bhp through 9G-Tronic automatic. Full Mercedes-Benz service history.</p>'},
-  {id:9,make:'MINI',model:'Cooper S',variant:'Hatch 3-Door',year:2022,price:18495,mileage:15200,fuel:'Petrol',transmission:'Manual',colour:'Chili Red',engine:'1,998cc',co2:'157g/km',roadTax:'\u00a3195',category:'Hatchback',badge:null,sold:false,imgs:['https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=800&q=80'],description:'<p>Vibrant 2022 MINI Cooper S 3-door in Chili Red. Just 15,200 miles. 178bhp turbocharged engine with 6-speed manual. Full MINI service history, both keys.</p>'}
-];
-const SOLD_STOCK=[
-  {id:'S1',make:'Peugeot',model:'3008 GT Line',variant:'1.5 BlueHDi GT Line EAT8',year:2020,mileage:31000,fuel:'Diesel',transmission:'Auto',colour:'Pearl White',category:'SUV',sold:true,imgs:['https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&q=80'],description:''},
-  {id:'S2',make:'BMW',model:'5 Series',variant:'530d xDrive M Sport Auto',year:2019,mileage:62000,fuel:'Diesel',transmission:'Auto',colour:'Black Sapphire',category:'Saloon',sold:true,imgs:['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80'],description:''},
-  {id:'S3',make:'Abarth',model:'595 Competizione',variant:'1.4 T-Jet 180',year:2021,mileage:9800,fuel:'Petrol',transmission:'Manual',colour:'Scorpione Black',category:'Hatchback',sold:true,imgs:['https://images.unsplash.com/photo-1471084899824-b8e36a7f22b3?w=800&q=80'],description:''},
-  {id:'S4',make:'Ford',model:'Focus ST',variant:'2.3 EcoBoost ST Auto',year:2020,mileage:28500,fuel:'Petrol',transmission:'Auto',colour:'Magnetic Grey',category:'Hatchback',sold:true,imgs:['https://images.unsplash.com/photo-1619362280286-f1d92441571a?w=800&q=80'],description:''}
-];
+let STOCK = [];
+let SOLD_STOCK = [];
+
+async function fetchCarsFromApi(){
+  const res = await fetch('/api/cars');
+  if(!res.ok) throw new Error('Failed to load cars');
+  return await res.json();
+}
+
+function mapCar(record){
+  return {
+    id: record.id,
+    make: record.make || '',
+    model: record.model || '',
+    year: Number(record.year) || '',
+    price: Number(record.price) || 0,
+    mileage: Number(record.mileage) || 0,
+    fuel: record.fuel || '',
+    transmission: record.transmission || '',
+    colour: record.colour || '',
+    engine: record.engine || '',
+    category: record.body || '',
+    co2: record.co2 || '',
+    roadTax: record.roadTax || '',
+    description: record.description || '',
+    sold: String(record.status || '').toLowerCase() === 'sold',
+    imgs: Array.isArray(record.photos) ? record.photos : [],
+    badge: record.featured ? 'Featured' : ''
+  };
+}
+
+async function loadCars(){
+  try{
+    const rows = await fetchCarsFromApi();
+    const cars = rows.map(mapCar);
+    STOCK = cars.filter(v=>!v.sold);
+    SOLD_STOCK = cars.filter(v=>v.sold);
+
+    renderStock(STOCK.filter(v=>!v.sold).slice(0,3),'home-featured-grid','stock');
+    populateMakes();
+    applyFilters();
+    renderStock(SOLD_STOCK,'sold-grid','sold');
+    handleRoute();
+  }catch(err){
+    console.error('CAR LOAD ERROR:', err);
+    document.getElementById('home-featured-grid').innerHTML = '<div class="no-results"><p>Unable to load vehicles right now.</p></div>';
+    document.getElementById('stock-grid').innerHTML = '<div class="no-results"><p>Unable to load vehicles right now.</p></div>';
+    document.getElementById('sold-grid').innerHTML = '<div class="no-results"><p>Unable to load vehicles right now.</p></div>';
+  }
+}
+
 const TESTIMONIALS=[
   {name:'James Thornton',location:'Huddersfield',rating:5,date:'February 2025',text:'Absolutely exceptional service. I purchased my BMW M4 from Summit and the whole experience was a pleasure from start to finish. No pressure, totally transparent, and the car was immaculate.'},
   {name:'Sarah Mitchell',location:'Leeds',rating:5,date:'January 2025',text:'I sold my car through Summit and the process was effortless. Fair valuation, prompt payment, and friendly professional service throughout.'},
@@ -783,7 +817,7 @@ function makeCard(v,source='stock'){
   const img=v.imgs&&v.imgs[0]?`<img src="${v.imgs[0]}" alt="${v.make} ${v.model}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=no-img>Image Unavailable</div>'">`:`<div class="no-img">No Image</div>`;
   const badge=v.badge?`<div class="stock-badge badge-tag">${v.badge}</div>`:v.sold?`<div class="stock-badge badge-sold-tag">SOLD</div>`:'';
   const price=v.sold?`<div class="stock-price">Sold</div>`:`<div class="stock-price">${fmt(v.price)}${v.priceNote?`<span style="font-size:0.65em;font-weight:300;margin-left:4px">${v.priceNote}</span>`:''}</div>`;
-  return`<div class="stock-card" onclick="openDetail(${JSON.stringify(v.id)},'${source}')"><div class="stock-card-img">${badge}${img}</div><div class="stock-card-body"><div class="stock-year">${v.year}</div><div class="stock-make">${v.make}</div><div class="stock-model">${v.model}</div><div class="stock-specs"><span class="stock-spec">${v.mileage.toLocaleString()} miles</span><span class="stock-spec">${v.transmission}</span><span class="stock-spec">${v.fuel}</span><span class="stock-spec">${v.colour}</span></div><div class="stock-footer">${price}<span class="stock-details">Full Details</span></div></div></div>`;
+  return`<div class="stock-card" onclick="openDetail(${JSON.stringify(v.id)},'${source}')"><div class="stock-card-img">${badge}${img}</div><div class="stock-card-body"><div class="stock-year">${v.year}</div><div class="stock-make">${v.make}</div><div class="stock-model">${v.model}</div><div class="stock-specs"><span class="stock-spec">${(Number(v.mileage)||0).toLocaleString()} miles</span><span class="stock-spec">${v.transmission}</span><span class="stock-spec">${v.fuel}</span><span class="stock-spec">${v.colour}</span></div><div class="stock-footer">${price}<span class="stock-details">Full Details</span></div></div></div>`;
 }
 function renderStock(data,id,source='stock'){const g=document.getElementById(id);if(!g)return;g.innerHTML=data.length?data.map(v=>makeCard(v,source)).join(''):`<div class="no-results"><p>No vehicles match your search.</p></div>`}
 
@@ -804,7 +838,7 @@ function openDetail(id,source,skipHashUpdate=false){
 
   const specs=[
     {l:'Year',v:v.year},
-    {l:'Mileage',v:v.mileage.toLocaleString()+' miles'},
+    {l:'Mileage',v:(Number(v.mileage)||0).toLocaleString()+' miles'},
     {l:'Fuel',v:v.fuel},
     {l:'Transmission',v:v.transmission},
     {l:'Colour',v:v.colour||'—'},
@@ -899,14 +933,10 @@ function submitEnquiry(e){e.preventDefault();document.getElementById('modal-form
 document.getElementById('enquiry-modal').addEventListener('click',function(e){if(e.target===this)closeEnquiry()});
 
 (function(){
-  renderStock(STOCK.filter(v=>!v.sold).slice(0,3),'home-featured-grid','stock');
   renderTestis(TESTIMONIALS.slice(0,3),'home-testi');
-  populateMakes();
-  applyFilters();
-  renderStock(SOLD_STOCK,'sold-grid','sold');
   renderTestis(TESTIMONIALS,'all-testimonials');
   injectFooter('home');
-  handleRoute();
+  loadCars();
   window.addEventListener('hashchange',handleRoute);
 })();
 </script>
