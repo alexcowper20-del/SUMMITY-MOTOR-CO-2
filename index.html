@@ -755,7 +755,24 @@ const TESTIMONIALS=[
 ];
 
 let currentPage='home',currentDetailSource='stock';
-function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));const el=document.getElementById('page-'+p);if(el){el.classList.add('active');currentPage=p}document.getElementById('vehicle-detail').style.display='none';window.scrollTo(0,0);injectFooter(p)}
+let isRoutingInternally=false;
+function showPage(p,skipHashUpdate=false){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  const el=document.getElementById('page-'+p);
+  if(el){
+    el.classList.add('active');
+    currentPage=p;
+  }
+  document.getElementById('vehicle-detail').style.display='none';
+  window.scrollTo(0,0);
+  injectFooter(p);
+
+  if(!skipHashUpdate){
+    isRoutingInternally=true;
+    window.location.hash=p==='home' ? '#home' : `#${p}`;
+    window.setTimeout(()=>{isRoutingInternally=false;},0);
+  }
+}
 function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open')}
 function closeMobile(){document.getElementById('mobile-menu').classList.remove('open')}
 const fids={home:'home-footer',stock:'stock-footer',sold:'sold-footer',about:'about-footer',testimonials:'testimonials-footer',contact:'contact-footer','find-us':'findus-footer',sell:'sell-footer'};
@@ -770,25 +787,97 @@ function makeCard(v,source='stock'){
 }
 function renderStock(data,id,source='stock'){const g=document.getElementById(id);if(!g)return;g.innerHTML=data.length?data.map(v=>makeCard(v,source)).join(''):`<div class="no-results"><p>No vehicles match your search.</p></div>`}
 
-function openDetail(id,source){
-  currentDetailSource=source;const list=source==='sold'?SOLD_STOCK:STOCK;const v=list.find(x=>x.id==id);if(!v)return;
+function openDetail(id,source,skipHashUpdate=false){
+  currentDetailSource=source;
+  const list=source==='sold'?SOLD_STOCK:STOCK;
+  const v=list.find(x=>String(x.id)===String(id));
+  if(!v)return;
+
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('vehicle-detail').style.display='block';window.scrollTo(0,0);
-  document.getElementById('detail-back-btn').textContent=source==='sold'?'\u2190 Back to Sold Vehicles':'\u2190 Back to Stock';
+  document.getElementById('vehicle-detail').style.display='block';
+  window.scrollTo(0,0);
+
+  document.getElementById('detail-back-btn').textContent=source==='sold'?'← Back to Sold Vehicles':'← Back to Stock';
   document.getElementById('detail-make-year').textContent=`${v.year} ${v.make}`;
   document.getElementById('detail-title').textContent=v.model;
   document.getElementById('detail-price').textContent=v.sold?'SOLD':fmt(v.price)+(v.priceNote||'');
-  const specs=[{l:'Year',v:v.year},{l:'Mileage',v:v.mileage.toLocaleString()+' miles'},{l:'Fuel',v:v.fuel},{l:'Transmission',v:v.transmission},{l:'Colour',v:v.colour},{l:'Engine',v:v.engine||'\u2014'},{l:'Body',v:v.category||'\u2014'},{l:'CO2',v:v.co2||'\u2014'},{l:'Road Tax',v:v.roadTax||'\u2014'}];
-  document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div><div class="ds-label">${s.l}</div><div class="ds-value">${s.v}</div></div>`).join('');
-  const mi=document.getElementById('detail-main-img');if(v.imgs&&v.imgs[0]){mi.src=v.imgs[0];mi.style.display='block'}else{mi.style.display='none'}
-  const tr=document.getElementById('detail-thumbs');tr.innerHTML=v.imgs&&v.imgs.length>1?v.imgs.map((i,n)=>`<img src="${i}" class="detail-thumb ${n===0?'active':''}" onclick="switchImg('${i}',this)" alt=""/>`).join(''):'';tr.style.display=v.imgs&&v.imgs.length>1?'flex':'none';
-  document.getElementById('detail-desc').innerHTML=v.description||'<p>Contact us for full details about this vehicle.</p>';
-  const df=document.getElementById('detail-footer');if(!df.querySelector('footer'))df.innerHTML=document.getElementById('footer-template').innerHTML;
+
+  const specs=[
+    {l:'Year',v:v.year},
+    {l:'Mileage',v:v.mileage.toLocaleString()+' miles'},
+    {l:'Fuel',v:v.fuel},
+    {l:'Transmission',v:v.transmission},
+    {l:'Colour',v:v.colour||'—'},
+    {l:'Engine',v:v.engine||'—'},
+    {l:'Body',v:v.category||'—'},
+    {l:'CO2',v:v.co2||'—'},
+    {l:'Road Tax',v:v.roadTax||'—'}
+  ];
+
+  document.getElementById('detail-specs').innerHTML =
+    specs.map(s=>`<div><div class="ds-label">${s.l}</div><div class="ds-value">${s.v}</div></div>`).join('');
+
+  const mi=document.getElementById('detail-main-img');
+  if(v.imgs&&v.imgs[0]){
+    mi.src=v.imgs[0];
+    mi.style.display='block';
+  }else{
+    mi.style.display='none';
+  }
+
+  const tr=document.getElementById('detail-thumbs');
+  tr.innerHTML = v.imgs&&v.imgs.length>1
+    ? v.imgs.map((i,n)=>`<img src="${i}" class="detail-thumb ${n===0?'active':''}" onclick="switchImg('${i}',this)" alt=""/>`).join('')
+    : '';
+  tr.style.display = v.imgs&&v.imgs.length>1 ? 'flex' : 'none';
+
+  document.getElementById('detail-desc').innerHTML =
+    v.description || '<p>Contact us for full details about this vehicle.</p>';
+
+  const df=document.getElementById('detail-footer');
+  if(!df.querySelector('footer')) df.innerHTML=document.getElementById('footer-template').innerHTML;
+
   document.getElementById('modal-vehicle-name').textContent=`${v.year} ${v.make} ${v.model}`;
+
+  if(!skipHashUpdate){
+    isRoutingInternally=true;
+    window.location.hash=`#vehicle-${source}-${encodeURIComponent(v.id)}`;
+    window.setTimeout(()=>{isRoutingInternally=false;},0);
+  }
 }
 function switchImg(src,el){document.getElementById('detail-main-img').src=src;document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
-function closeDetail(){document.getElementById('vehicle-detail').style.display='none';showPage(currentDetailSource==='sold'?'sold':'stock')}
+function closeDetail(){
+  document.getElementById('vehicle-detail').style.display='none';
+  showPage(currentDetailSource==='sold'?'sold':'stock');
+}
+function handleRoute(){
+  if(isRoutingInternally)return;
 
+  const hash=(window.location.hash||'#home').replace(/^#/,'');
+  if(!hash||hash==='home'){
+    showPage('home',true);
+    return;
+  }
+
+  if(hash.startsWith('vehicle-')){
+    const parts=hash.split('-');
+    const source=parts[1];
+    const id=decodeURIComponent(parts.slice(2).join('-'));
+
+    if((source==='stock'||source==='sold')&&id){
+      openDetail(id,source,true);
+      return;
+    }
+  }
+
+  const validPages=['stock','sold','about','testimonials','sell','find-us','contact'];
+  if(validPages.includes(hash)){
+    showPage(hash,true);
+    return;
+  }
+
+  showPage('home',true);
+}
 function populateMakes(){const makes=[...new Set(STOCK.filter(v=>!v.sold).map(v=>v.make))].sort();const s=document.getElementById('filter-make');if(!s)return;makes.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o)})}
 function applyFilters(){
   const make=document.getElementById('filter-make')?.value,model=document.getElementById('filter-model')?.value,trans=document.getElementById('filter-trans')?.value,fuel=document.getElementById('filter-fuel')?.value,price=document.getElementById('filter-price')?.value,miles=document.getElementById('filter-miles')?.value,sort=document.getElementById('sort-select')?.value;
@@ -812,10 +901,13 @@ document.getElementById('enquiry-modal').addEventListener('click',function(e){if
 (function(){
   renderStock(STOCK.filter(v=>!v.sold).slice(0,3),'home-featured-grid','stock');
   renderTestis(TESTIMONIALS.slice(0,3),'home-testi');
-  populateMakes();applyFilters();
+  populateMakes();
+  applyFilters();
   renderStock(SOLD_STOCK,'sold-grid','sold');
   renderTestis(TESTIMONIALS,'all-testimonials');
   injectFooter('home');
+  handleRoute();
+  window.addEventListener('hashchange',handleRoute);
 })();
 </script>
 </body>
