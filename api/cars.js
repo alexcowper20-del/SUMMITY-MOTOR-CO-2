@@ -1,10 +1,10 @@
 export default async function handler(req, res) {
   try {
     const response = await fetch(
-      "https://api.airtable.com/v0/appod7WzPQ3JyCFlI/CARS",
+      "https://api.airtable.com/v0/appod7WzPQ3JyCFlI/CARS?view=Grid%20view",
       {
         headers: {
-          Authorization: "Bearer patFhJ1GJYKQKoWLN"
+          Authorization: "Bearer YOUR_TOKEN"
         }
       }
     );
