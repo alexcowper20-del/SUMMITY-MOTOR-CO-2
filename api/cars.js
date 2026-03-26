@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const tableName = process.env.AIRTABLE_TABLE_NAME || 'CARS';
     const token = process.env.AIRTABLE_TOKEN;
 
-    const url = `https://api.airtable.com/v0/${baseId}/${tableName}?view=Grid%20view`;
+    const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
 
     const airtableRes = await fetch(url, {
       headers: {
